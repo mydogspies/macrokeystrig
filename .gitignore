@@ -1,0 +1,6 @@
+.idea
+cmake-build-*
+ch57x*
+*.ui
+*.yaml
+*.ui.qml
