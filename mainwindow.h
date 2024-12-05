@@ -1,5 +1,7 @@
 #include <QMainWindow>
 
+#include "json.hpp"
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -14,10 +16,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void SlotButtonClicked();
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void SlotButtonClicked();
+    static nlohmann::json jsonData();
 
     std::wstring charToWString(const char *text);
 

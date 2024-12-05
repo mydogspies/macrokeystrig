@@ -2,30 +2,26 @@
 #include <iostream>
 #include "./ui_mainwindow.h"
 #include <Windows.h>
+#include <fstream>
+#include "json.hpp"
+
+// for convenience
+using json = nlohmann::json;
 
 /*
 Macrokeytrig by https://github.com/mydogspies
-version 0.1
+version 0.0.2
 Simple utility to trigger scripts using "ch57x-keyboard-tool" from kriomant.
 https://github.com/kriomant/ch57x-keyboard-tool
+This utility requires the following libs;
+https://github.com/nlohmann/json, together with the correct version "json.hpp" in the root folder
  */
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
-    // temp definition - move to ini file
-    QString ** data;
-    data = new QString*[5];
-    for(int i=0; i<5; i++) data[i] = new QString[2];
-    data[0][0] = "affinity photo";
-    data[0][1] = "3x1aphoto.yaml";
-    data[1][0] = "dxo photolab";
-    data[1][1] = "3x1dxolab.yaml";
-    data[2][0] = "msfs";
-    data[2][1] = "3x1msfs.yaml";
-
+    json data = jsonData();
     // button listeners
     ui->setupUi(this);
     connect(ui->pushButton,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
@@ -33,6 +29,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pushButton_3,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
     connect(ui->pushButton_4,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
     connect(ui->pushButton_5,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
+    // button text
+    ui->pushButton_2->setText(QString::fromStdString(data["1"]["app"]));
+    ui->pushButton_3->setText(QString::fromStdString(data["2"]["app"]));
+    ui->pushButton_4->setText(QString::fromStdString(data["3"]["app"]));
+    ui->pushButton_5->setText(QString::fromStdString(data["4"]["app"]));
 }
 
 MainWindow::~MainWindow()
@@ -40,28 +41,38 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// get the setup data
+json MainWindow::jsonData() {
+    std::ifstream f("..\\mktsetup.json");
+    json data = json::parse(f);
+    return data;
+}
+
 // actions on button clicked
 void MainWindow::SlotButtonClicked() {
 
     auto sender = this->sender();
 
+    const std::wstring pathToExe = charToWString("..\\ch57x-keyboard-tool.exe");
+
     if ( sender == ui->pushButton ) {
         std::cout << "Setup" << std::endl;
 
     } else if ( sender == ui->pushButton_2 ) {
-        std::cout << "affinity phot" << std::endl;
+        std::cout << "affinity photo" << std::endl;
+
 
     } else if ( sender == ui->pushButton_3 ) {
         std::cout << "dxo photolab" << std::endl;
 
     } else if ( sender == ui->pushButton_4 ) {
-        std::cout << "msfs 2020" << std::endl;
+        std::cout << "MSFS 2020" << std::endl;
 
     } else if ( sender == ui->pushButton_5 ) {
-        std::cout << "FFXIV" << std::endl;
+        std::cout << "ffxiv" << std::endl;
 
-        ExecuteProcess(charToWString("S:\\40_Coding\\01_MIXENV\\macrokeytrigger\\ch57x-keyboard-tool.exe"),
-            MainWindow::charToWString("upload S:\\40_Coding\\01_MIXENV\\macrokeytrigger\\3x1ffxiv.yaml")
+        ExecuteProcess(pathToExe,
+            MainWindow::charToWString("upload ..\\3x1ffxiv.yaml")
             ,5);
     }
 }
@@ -77,6 +88,8 @@ std::wstring MainWindow::charToWString(const char* text)
     return wstr;
 }
 
+// process to load the yaml file into the keyboard programming app
+// see https://github.com/kriomant/ch57x-keyboard-tool
 size_t MainWindow::ExecuteProcess(std::wstring FullPathToExe, std::wstring Parameters, size_t SecondsToWait)
 {
     size_t iMyCounter = 0, iReturnVal = 0, iPos = 0;

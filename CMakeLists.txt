@@ -13,6 +13,10 @@ find_package(Qt6 COMPONENTS
   Widgets
   REQUIRED)
 
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(${nlohmann_json_source}
+        ${CMAKE_CURRENT_BINARY_DIR}/nlohmann_json)
+
 add_executable(macrokeystrig main.cpp
         mainwindow.h
         mainwindow.cpp)
@@ -20,7 +24,15 @@ target_link_libraries(macrokeystrig
   Qt::Core
   Qt::Gui
   Qt::Widgets
+        nlohmann_json::nlohmann_json
 )
+
+if(NOT MSVC)
+    add_executable(without_exceptions main.cpp)
+    target_link_libraries(without_exceptions nlohmann_json::nlohmann_json)
+    target_compile_definitions(without_exceptions PRIVATE JSON_NOEXCEPTION)
+    target_compile_options(without_exceptions PRIVATE -fno-exceptions)
+endif()
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)

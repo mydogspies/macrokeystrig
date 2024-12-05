@@ -4,3 +4,4 @@ ch57x*
 *.ui
 *.yaml
 *.ui.qml
+json.hpp
