@@ -4,14 +4,12 @@
 #include <Windows.h>
 #include <fstream>
 #include "json.hpp"
-
-// for convenience
 using json = nlohmann::json;
 
 /*
 Macrokeytrig by https://github.com/mydogspies
 version 0.0.2
-Simple utility to trigger scripts using "ch57x-keyboard-tool" from kriomant.
+Simple utility to trigger yaml config files for "ch57x-keyboard-tool" from kriomant.
 https://github.com/kriomant/ch57x-keyboard-tool
 This utility requires the following libs;
 https://github.com/nlohmann/json, together with the correct version "json.hpp" in the root folder
@@ -59,17 +57,21 @@ void MainWindow::SlotButtonClicked() {
         std::cout << "Setup" << std::endl;
 
     } else if ( sender == ui->pushButton_2 ) {
-        std::cout << "affinity photo" << std::endl;
 
+        ExecuteProcess(pathToExe,
+            MainWindow::charToWString("upload ..\\3x1aphoto.yaml")
+            ,5);
 
     } else if ( sender == ui->pushButton_3 ) {
-        std::cout << "dxo photolab" << std::endl;
+
+        ExecuteProcess(pathToExe,
+            MainWindow::charToWString("upload ..\\3x1photolab.yaml")
+            ,5);
 
     } else if ( sender == ui->pushButton_4 ) {
         std::cout << "MSFS 2020" << std::endl;
 
     } else if ( sender == ui->pushButton_5 ) {
-        std::cout << "ffxiv" << std::endl;
 
         ExecuteProcess(pathToExe,
             MainWindow::charToWString("upload ..\\3x1ffxiv.yaml")
@@ -90,6 +92,7 @@ std::wstring MainWindow::charToWString(const char* text)
 
 // process to load the yaml file into the keyboard programming app
 // see https://github.com/kriomant/ch57x-keyboard-tool
+// below code by https://goffconcepts.com/techarticles/createprocess.html
 size_t MainWindow::ExecuteProcess(std::wstring FullPathToExe, std::wstring Parameters, size_t SecondsToWait)
 {
     size_t iMyCounter = 0, iReturnVal = 0, iPos = 0;
