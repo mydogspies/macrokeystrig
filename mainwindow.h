@@ -1,4 +1,5 @@
 #include <QMainWindow>
+#include <qpushbutton.h>
 
 #include "json.hpp"
 
@@ -22,6 +23,8 @@ public:
     ~MainWindow();
 
     static nlohmann::json jsonData();
+
+    std::map<int, QPushButton *> mapBtn();
 
     std::wstring charToWString(const char *text);
 

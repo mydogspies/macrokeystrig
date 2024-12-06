@@ -22,16 +22,21 @@ MainWindow::MainWindow(QWidget *parent)
     json data = jsonData();
     // button listeners
     ui->setupUi(this);
-    connect(ui->pushButton,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
-    connect(ui->pushButton_2,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
-    connect(ui->pushButton_3,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
-    connect(ui->pushButton_4,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
-    connect(ui->pushButton_5,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
-    // button text
-    ui->pushButton_2->setText(QString::fromStdString(data["1"]["app"]));
-    ui->pushButton_3->setText(QString::fromStdString(data["2"]["app"]));
-    ui->pushButton_4->setText(QString::fromStdString(data["3"]["app"]));
-    ui->pushButton_5->setText(QString::fromStdString(data["4"]["app"]));
+    this->setWindowTitle("MacroKeyTrig v.0.0.3");
+
+    // get the button map, then assign actions and states
+    std::map<int, QPushButton*> qtButtons = mapBtn();
+    for (auto const& [key,val] : qtButtons) {
+
+        // assign actions
+        connect(val,&QPushButton::clicked,this,&MainWindow::SlotButtonClicked);
+        // assign button text
+        if (key > 0) {
+            std::string idx = std::to_string(key);
+            val->setText(QString::fromStdString(data[idx]["app"]));
+        }
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -39,42 +44,82 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// get the setup data
+// reads the setup config data from mktsetup.json
 json MainWindow::jsonData() {
     std::ifstream f("..\\mktsetup.json");
     json data = json::parse(f);
     return data;
 }
 
+// defines a map of all the gui buttons for later use
+std::map<int, QPushButton*> MainWindow::mapBtn() {
+    std::map<int, QPushButton*> qtButtons;
+    qtButtons[0] = ui->btnSetup;
+    qtButtons[1] = ui->btn1;
+    qtButtons[2] = ui->btn2;
+    qtButtons[3] = ui->btn3;
+    qtButtons[4] = ui->btn4;
+    qtButtons[5] = ui->btn5;
+    qtButtons[6] = ui->btn6;
+    qtButtons[7] = ui->btn7;
+    qtButtons[8] = ui->btn8;
+    qtButtons[9] = ui->btn9;
+    qtButtons[10] = ui->btn10;
+    return qtButtons;
+}
+
 // actions on button clicked
 void MainWindow::SlotButtonClicked() {
 
     auto sender = this->sender();
+    json data = jsonData();
 
-    const std::wstring pathToExe = charToWString("..\\ch57x-keyboard-tool.exe");
+    // root dir of this app (ch57x-keyboard-tool.exe needs to be in the same dir)
+    std::string pathToExe = data["0"]["pathToRoot"];
+    pathToExe.append(data["0"]["file"]);
 
-    if ( sender == ui->pushButton ) {
+    // define some commands
+    std::string cmdUpload = "upload ";
+    cmdUpload.append(data["0"]["pathToRoot"]);
+
+    // setup button
+    if ( sender == ui->btnSetup ) {
         std::cout << "Setup" << std::endl;
 
-    } else if ( sender == ui->pushButton_2 ) {
+    } else if ( sender == ui->btn1 ) { // button 1
 
-        ExecuteProcess(pathToExe,
-            MainWindow::charToWString("upload ..\\3x1aphoto.yaml")
+        std::string yamlFile = cmdUpload;
+        yamlFile.append(data["1"]["file"]);
+
+        ExecuteProcess(charToWString(pathToExe.c_str()),
+            MainWindow::charToWString(yamlFile.c_str())
             ,5);
 
-    } else if ( sender == ui->pushButton_3 ) {
+    } else if ( sender == ui->btn2 ) { // button 2
 
-        ExecuteProcess(pathToExe,
-            MainWindow::charToWString("upload ..\\3x1photolab.yaml")
+        std::string yamlFile = cmdUpload;
+        yamlFile.append(data["2"]["file"]);
+
+        ExecuteProcess(charToWString(pathToExe.c_str()),
+            MainWindow::charToWString(yamlFile.c_str())
             ,5);
 
-    } else if ( sender == ui->pushButton_4 ) {
-        std::cout << "MSFS 2020" << std::endl;
+    } else if ( sender == ui->btn3 ) { // button 3
 
-    } else if ( sender == ui->pushButton_5 ) {
+        std::string yamlFile = cmdUpload;
+        yamlFile.append(data["3"]["file"]);
 
-        ExecuteProcess(pathToExe,
-            MainWindow::charToWString("upload ..\\3x1ffxiv.yaml")
+        ExecuteProcess(charToWString(pathToExe.c_str()),
+            MainWindow::charToWString(yamlFile.c_str())
+            ,5);
+
+    } else if ( sender == ui->btn4 ) { // button 4
+
+        std::string yamlFile = cmdUpload;
+        yamlFile.append(data["4"]["file"]);
+
+        ExecuteProcess(charToWString(pathToExe.c_str()),
+            MainWindow::charToWString(yamlFile.c_str())
             ,5);
     }
 }

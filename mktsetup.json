@@ -1,13 +1,36 @@
-{"1" : { 
+{
+"0" : { 
+      "app": "Main App",
+      "file": "ch57x-keyboard-tool.exe",
+	  "pathToRoot": "..\\"},
+"1" : { 
       "app": "Affinity Photo",
       "file": "3x1aphoto.yaml"},
 "2" : {
       "app" : "DXO Photolab",
-      "fiile": "3x1photolab.yaml"},
+      "file": "3x1photolab.yaml"},
 "3" : {
       "app" : "MSFS 2020",
-      "fiile": "3x1msfs2020.yaml"},
+      "file": "3x1msfs2020.yaml"},
 "4" : {
       "app" : "FFXIV",
-      "fiile": "3x1ffxiv.yaml"}
+      "file": "3x1ffxiv.yaml"},
+"5" : { 
+      "app": "empty",
+      "file": "myAppConfig"},
+"6" : {
+      "app": "empty",
+      "file": "myAppConfig"},
+"7" : {
+      "app": "empty",
+      "file": "myAppConfig"},
+"8" : {
+      "app": "empty",
+      "file": "myAppConfig"},
+"9" : {
+      "app": "empty",
+      "file": "myAppConfig"},
+"10" : {
+      "app": "empty",
+      "file": "myAppConfig"}
  }
