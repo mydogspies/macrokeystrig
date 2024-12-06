@@ -16,21 +16,21 @@
       "app" : "FFXIV",
       "file": "3x1ffxiv.yaml"},
 "5" : { 
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"},
 "6" : {
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"},
 "7" : {
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"},
 "8" : {
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"},
 "9" : {
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"},
 "10" : {
-      "app": "empty",
+      "app": "-",
       "file": "myAppConfig"}
  }

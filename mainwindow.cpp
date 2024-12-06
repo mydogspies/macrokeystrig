@@ -73,6 +73,7 @@ void MainWindow::SlotButtonClicked() {
 
     auto sender = this->sender();
     json data = jsonData();
+    int waitTime = 10;
 
     // root dir of this app (ch57x-keyboard-tool.exe needs to be in the same dir)
     std::string pathToExe = data["0"]["pathToRoot"];
@@ -93,7 +94,7 @@ void MainWindow::SlotButtonClicked() {
 
         ExecuteProcess(charToWString(pathToExe.c_str()),
             MainWindow::charToWString(yamlFile.c_str())
-            ,5);
+            ,waitTime);
 
     } else if ( sender == ui->btn2 ) { // button 2
 
@@ -102,7 +103,7 @@ void MainWindow::SlotButtonClicked() {
 
         ExecuteProcess(charToWString(pathToExe.c_str()),
             MainWindow::charToWString(yamlFile.c_str())
-            ,5);
+            ,waitTime);
 
     } else if ( sender == ui->btn3 ) { // button 3
 
@@ -111,7 +112,7 @@ void MainWindow::SlotButtonClicked() {
 
         ExecuteProcess(charToWString(pathToExe.c_str()),
             MainWindow::charToWString(yamlFile.c_str())
-            ,5);
+            ,waitTime);
 
     } else if ( sender == ui->btn4 ) { // button 4
 
@@ -120,7 +121,7 @@ void MainWindow::SlotButtonClicked() {
 
         ExecuteProcess(charToWString(pathToExe.c_str()),
             MainWindow::charToWString(yamlFile.c_str())
-            ,5);
+            ,waitTime);
     }
 }
 
